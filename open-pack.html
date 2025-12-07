@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Worst Kids Ever – Open Pack</title>
+
+<style>
+:root {
+  --bg: #050509;
+  --text: #ffffff;
+  --muted: #b4b4c8;
+  --accent: #ff4b8b;
+  --accent2: #38ff8b;
+  --accent3: #ffcc35;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui,-apple-system; }
+
+body {
+  background: radial-gradient(circle at top, #1d1532 0%, #050509 50%, #000 100%);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+header {
+  background: rgba(0,0,0,0.6);
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.logo {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.16em;
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #22070b;
+  display:inline-block;
+}
+
+/* MAIN WRAPPER */
+main {
+  position: relative;
+  flex: 1;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* PACK IMAGE */
+.pack {
+  width: 230px;
+  height: 350px;
+  border-radius: 18px;
+  background: linear-gradient(135deg,#ff4b8b,#22183c);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  animation: shake 1.2s ease-in-out infinite;
+  position:relative;
+}
+
+@keyframes shake {
+  0% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(-2deg); }
+}
+
+.open-btn {
+  position:absolute;
+  bottom:-70px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 20px;
+  border-radius:999px;
+  font-size:0.9rem;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#22070b;
+  font-weight:700;
+  letter-spacing:0.14em;
+}
+
+/* OPEN ANIMATION COVER */
+.rip-cover {
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:linear-gradient(180deg,#000000 20%,#2b203b 100%);
+  opacity:1;
+  transition:all .8s ease;
+  pointer-events:none;
+}
+
+/* CARDS REVEAL STAGE */
+.cards-container {
+  position:absolute;
+  display:flex;
+  gap:12px;
+  opacity:0;
+  transition:opacity .8s ease;
+}
+
+.card {
+  width:160px;
+  height:230px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#3b2353,#141420);
+  border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 12px 25px rgba(0,0,0,0.6);
+  transform:translateY(40px) scale(.8);
+  transition:transform .4s ease, opacity .4s ease;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.card.hidden {
+  opacity:0;
+}
+
+.card.revealed {
+  transform:translateY(0) scale(1);
+  opacity:1;
+}
+
+/* FOIL SHINE EFFECT */
+.foil::after {
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:linear-gradient(130deg,
+      rgba(255,255,255,0.2) 0%,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,0.3) 60%,
+      rgba(255,255,255,0) 100%);
+  animation:shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% { transform:translateX(-100%) rotate(20deg); }
+  100% { transform:translateX(200%) rotate(20deg); }
+}
+
+/* CARD TEXT */
+.card h3 {
+  font-size:1rem;
+  text-transform:uppercase;
+  padding:12px;
+}
+.card small {
+  padding:0 12px;
+  color:var(--muted);
+}
+
+/* RETURN BUTTON */
+.back-btn {
+  position:absolute;
+  bottom:20px;
+  right:20px;
+  padding:10px 16px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+  border-radius:999px;
+  cursor:pointer;
+  letter-spacing:0.1em;
+}
+.back-btn:hover {
+  background:rgba(255,255,255,0.2);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">THE WORST KIDS EVER</div>
+</header>
+
+<main>
+
+  <div id="pack" class="pack">
+    <div id="ripCover" class="rip-cover"></div>
+    <button id="openBtn" class="open-btn" onclick="openPack()">OPEN PACK</button>
+  </div>
+
+  <!-- REVEAL CARDS -->
+  <div id="cardsBox" class="cards-container">
+    <div class="card hidden" id="card1"></div>
+    <div class="card hidden" id="card2"></div>
+    <div class="card hidden" id="card3"></div>
+  </div>
+
+  <button class="back-btn" onclick="location.href='collection.html'">← Collection</button>
+
+</main>
+
+<script>
+// DEMO CARDS (replace with real data later)
+const demoCards = [
+  { name:"Nose Pickin’ Brody", rarity:"Rare", foil:false },
+  { name:"Boogernaut Billy", rarity:"Foil", foil:true },
+  { name:"Ralphin’ Ralph", rarity:"Common", foil:false },
+  { name:"Need-a-Hug Doug", rarity:"Common", foil:false },
+  { name:"Snot Rocket Rick", rarity:"Foil", foil:true },
+  { name:"Brody Buddy", rarity:"Iconic", foil:true }
+];
+
+function randomCard() {
+  return demoCards[Math.floor(Math.random()*demoCards.length)];
+}
+
+function openPack(){
+  const cover = document.getElementById("ripCover");
+  const btn = document.getElementById("openBtn");
+  const pack = document.getElementById("pack");
+  const cardsBox = document.getElementById("cardsBox");
+
+  // Disable button
+  btn.style.display = "none";
+
+  // Rip animation
+  cover.style.opacity = 0;
+  cover.style.transform = "translateY(-120%) scale(1.4)";
+  pack.style.animation = "none";
+
+  setTimeout(() => {
+    pack.style.opacity = 0;
+
+    // Show cards after pack disappears
+    setTimeout(() => {
+      cardsBox.style.opacity = 1;
+
+      revealCards();
+    }, 500);
+
+  }, 700);
+}
+
+function revealCards(){
+  let slots = ["card1","card2","card3"];
+  slots.forEach((id, i) => {
+    const slot = document.getElementById(id);
+    const info = randomCard();
+
+    slot.innerHTML = `
+      <h3>${info.name}</h3>
+      <small>${info.rarity}</small>
+    `;
+
+    if(info.foil) slot.classList.add("foil");
+
+    setTimeout(() => {
+      slot.classList.remove("hidden");
+      slot.classList.add("revealed");
+    }, 300 + i*400);
+  });
+}
+
+</script>
+
+</body>
+</html>
