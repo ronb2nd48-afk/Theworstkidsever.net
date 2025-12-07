@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Worst Kids Ever – My Collection</title>
+
+<style>
+:root {
+  --bg: #050509;
+  --bg2: #11111a;
+  --text: #ffffff;
+  --muted: #b4b4c8;
+  --accent: #ff4b8b;
+  --accent2: #38ff8b;
+  --accent3: #ffcc35;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui,-apple-system; }
+
+body {
+  background: radial-gradient(circle at top, #20173d 0%, #050509 50%, #000 100%);
+  color: var(--text);
+}
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  background: rgba(5,5,9,0.92);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  z-index: 50;
+}
+.nav {
+  max-width: 1100px;
+  margin: auto;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #22070b;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--muted);
+  margin-left: 16px;
+}
+.nav-links a:hover { color: #fff; }
+
+/* PAGE TITLE */
+.section { max-width: 1100px; margin: auto; padding: 32px 16px; }
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.subtitle { color: var(--muted); margin-bottom: 20px; }
+
+/* FILTERS */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.4);
+  font-size: .85rem;
+  cursor: pointer;
+}
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  border-color: transparent;
+  color: #22070b;
+  font-weight: 600;
+}
+
+/* CARD GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.card-inner {
+  width: 100%;
+  height: 230px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.5);
+  transition: transform .6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.card-front, .card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  padding: 12px;
+  border-radius: 12px;
+}
+.card-front {
+  background: linear-gradient(135deg,#3f2a56,#141420);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-front h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.card-rarity { font-size: .75rem; color: var(--muted); }
+.card-back {
+  transform: rotateY(180deg);
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.card-back h4 {
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: .85rem;
+}
+.desc { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 22px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">THE WORST KIDS EVER</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="packs.html">Packs</a>
+      <a href="collection.html">Collection</a>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <h1>My Collection</h1>
+  <p class="subtitle">Tap any card to flip it · Demo data only until your real WKE cards are added.</p>
+
+  <!-- FILTER BUTTONS -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterCards('all')">All</button>
+    <button class="filter-btn" onclick="filterCards('common')">Common</button>
+    <button class="filter-btn" onclick="filterCards('rare')">Rare</button>
+    <button class="filter-btn" onclick="filterCards('foil')">Foil</button>
+    <button class="filter-btn" onclick="filterCards('iconic')">Iconic</button>
+  </div>
+
+  <!-- CARD GRID -->
+  <div id="cardGrid" class="card-grid"></div>
+</section>
+
+<footer>
+  © 2025 THE WORST KIDS EVER · Digital Collection Prototype
+</footer>
+
+<script>
+// ======= DEMO CARD DATA (Replace with your real cards later) =======
+const cards = [
+  {
+    name: "Nose Pickin’ Brody",
+    rarity: "rare",
+    desc: "The booger king of the playground. Never misses a pick.",
+    trouble: 10, power: 5, hygiene: 2
+  },
+  {
+    name: "Ralphin’ Ralph",
+    rarity: "common",
+    desc: "Vomit vortex champion of Room 12.",
+    trouble: 8, power: 6, hygiene: 1
+  },
+  {
+    name: "Boogernaut Billy",
+    rarity: "foil",
+    desc: "Cosmic snot warrior of the galaxy.",
+    trouble: 9, power: 7, hygiene: 1
+  },
+  {
+    name: "Need-a-Hug Doug",
+    rarity: "common",
+    desc: "Sad kid with a powerful emotional blast radius.",
+    trouble: 6, power: 4, hygiene: 3
+  },
+  {
+    name: "Brody Buddy",
+    rarity: "iconic",
+    desc: "Autistic sensory-friendly hero kid.",
+    trouble: 5, power: 10, hygiene: 4
+  }
+];
+
+// ====== RENDER CARDS ======
+const grid = document.getElementById("cardGrid");
+
+function renderCards(data) {
+  grid.innerHTML = "";
+  data.forEach((card, index) => {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">
+          <h3>${card.name}</h3>
+          <div class="card-rarity">${card.rarity.toUpperCase()}</div>
+        </div>
+        <div class="card-back">
+          <h4>${card.name}</h4>
+          <div class="desc">${card.desc}</div>
+          <div class="stats-row">
+            <span>Trouble: ${card.trouble}</span>
+            <span>Power: ${card.power}</span>
+            <span>Hygiene: ${card.hygiene}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    el.onclick = () => el.classList.toggle("flipped");
+    grid.appendChild(el);
+  });
+}
+
+renderCards(cards);
+
+// ====== FILTER SYSTEM ======
+function filterCards(type) {
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if (type === "all") return renderCards(cards);
+  renderCards(cards.filter(c => c.rarity === type));
+}
+
+</script>
+
+</body>
+</html>
