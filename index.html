@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Worst Kids Ever – Digital Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #050509;
+      --bg-alt: #11111a;
+      --accent: #e92cff;
+      --accent2: #38ff8b;
+      --accent3: #ffcc35;
+      --text: #ffffff;
+      --muted: #a0a3b5;
+      --card-bg: #181825;
+      --border-radius-lg: 18px;
+      --border-radius-md: 12px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.6);
+      --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #251c42 0, #050509 45%, #000 100%);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout */
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 5, 9, 0.92),
+        rgba(5, 5, 9, 0.8),
+        rgba(5, 5, 9, 0)
+      );
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-main {
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: radial-gradient(circle at top, #ff4b8b 0, #7e2dff 40%, #050509 100%);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.06);
+      white-space: nowrap;
+    }
+
+    .logo-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .pill-cta {
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #050509;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(233, 44, 255, 0.4);
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .pill-cta:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 14px 32px rgba(233, 44, 255, 0.55);
+      filter: brightness(1.05);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 16px;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 28px;
+      align-items: center;
+      padding-top: 36px;
+      padding-bottom: 32px;
+    }
+
+    .hero-left-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 12px;
+      color: var(--muted);
+    }
+
+    .hero-left-tag span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent2);
+      box-shadow: 0 0 6px var(--accent2);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 4vw, 2.9rem);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span.brand {
+      display: inline-block;
+      padding: 3px 10px 4px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #ffcc35, #ff4b8b);
+      color: #220809;
+      text-shadow: none;
+      box-shadow: 0 0 12px rgba(255, 204, 53, 0.65);
+    }
+
+    .hero-sub {
+      font-size: 0.98rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 18px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-meta .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-right {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .pack-card {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      border-radius: var(--border-radius-lg);
+      background: radial-gradient(circle at top, #ff4b8b 0, #251c4f 35%, #050509 85%);
+      padding: 18px 18px 20px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .pack-card-glow {
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,0.25) 0, transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(255,255,255,0.2) 0, transparent 60%),
+        radial-gradient(circle at 50% 120%, rgba(0,0,0,0.9) 0, transparent 75%);
+      opacity: 0.9;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .pack-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .pack-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(5,5,9,0.6);
+      border: 1px solid rgba(255,255,255,0.24);
+    }
+
+    .pack-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent3);
+      box-shadow: 0 0 6px var(--accent3);
+    }
+
+    .pack-title {
+      margin-top: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+    }
+
+    .pack-subtitle {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-top: 4px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .pack-body {
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      padding: 10px 10px 12px;
+      border-radius: 14px;
+      background: linear-gradient(155deg, rgba(5,5,9,0.9), rgba(5,5,9,0.6));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow-card);
+    }
+
+    .pack-inner-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .pack-card-preview {
+      flex: 1;
+      min-height: 90px;
+      border-radius: 12px;
+      background: conic-gradient(
+        from 200deg,
+        #ffcc35,
+        #ff4b8b,
+        #7c2aff,
+        #38ff8b,
+        #ffcc35
+      );
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 4.5s ease-in-out infinite;
+    }
+
+    .pack-card-preview-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 9px;
+      background: radial-gradient(circle at top, #2b244f 0, #050509 70%);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .pack-card-preview-inner span.title {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .pack-card-preview-inner span.note {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .pack-chance-list {
+      flex: 1;
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .pack-chance-list ul {
+      list-style: none;
+      display: grid;
+      gap: 2px;
+    }
+
+    .pack-chance-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .pack-chance-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+    }
+
+    .pack-chance-value {
+      color: #fff;
+    }
+
+    .open-pack-area {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255,255,255,0.12);
+    }
+
+    .open-pack-btn {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent3), var(--accent));
+      color: #220809;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.8rem;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .open-pack-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255,255,255,0.55) 40%,
+        transparent 80%
+      );
+      transform: translateX(-120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .open-pack-btn.pulse {
+      animation: bump 1.4s ease-in-out infinite;
+    }
+
+    .open-pack-btn.pulse::after {
+      animation: shine 1.6s ease-in-out infinite;
+    }
+
+    .pack-result {
+      min-height: 54px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.55);
+      padding: 6px 8px;
+      font-size: 0.76rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pack-result-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .pack-result-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 3px;
+    }
+
+    .pack-result-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.18);
+      white-space: nowrap;
+    }
+
+    /* Sections */
+
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 22px;
+      max-width: 560px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .step-card {
+      border-radius: var(--border-radius-md);
+      background: rgba(17,17,28,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadow-card);
+      font-size: 0.86rem;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card-demo {
+      border-radius: 14px;
+      background: radial-gradient(circle at top, #3d2758 0, #141420 60%, #050509 100%);
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 10px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    }
+
+    .card-demo::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.18) 0, transparent 45%);
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+
+    .card-demo-inner {
+      border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 10px 8px 9px;
+      background: conic-gradient(
+        from 120deg,
+        rgba(255,76,139,0.22),
+        rgba(120,255,203,0.16),
+        rgba(125,90,255,0.2),
+        rgba(255,204,53,0.2),
+        rgba(255,76,139,0.22)
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 160px;
+    }
+
+    .card-demo-banner {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
+      align-self: center;
+    }
+
+    .card-demo-name {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .card-demo-tag {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-demo-stats {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      padding-top: 6px;
+      margin-top: 10px;
+    }
+
+    .card-demo:hover {
+      transform: translateY(-6px) rotate(-1.5deg);
+      box-shadow: 0 24px 45px rgba(0,0,0,0.85);
+      filter: brightness(1.05);
+    }
+
+    .card-demo:hover::before {
+      opacity: 1;
+    }
+
+    .packs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pack-tier {
+      border-radius: var(--border-radius-md);
+      background: linear-gradient(145deg, #141420, #060710);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadow-card);
+      font-size: 0.86rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pack-tier-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .pack-tier-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .pack-tier-price {
+      font-size: 0.8rem;
+      color: var(--accent3);
+      margin-bottom: 8px;
+    }
+
+    .pack-tier ul {
+      list-style: none;
+      display: grid;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .pack-tier li {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .dot-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.65);
+      margin-top: 4px;
+    }
+
+    .pack-tier-btn {
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px dashed rgba(255,255,255,0.3);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(0,0,0,0.4);
+      color: var(--muted);
+      width: 100%;
+      text-align: center;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .info-card {
+      border-radius: var(--border-radius-md);
+      background: rgba(10,10,18,0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadow-card);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .info-card strong {
+      color: var(--text);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+    }
+
+    .badge {
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.5);
+    }
+
+    footer.site-footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: #050509;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 18px 16px 24px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Animations */
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+    }
+
+    @keyframes bump {
+      0%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-3px) scale(1.01); }
+      70% { transform: translateY(0); }
+    }
+
+    @keyframes shine {
+      0% {
+        transform: translateX(-120%);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      70% {
+        transform: translateX(120%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(120%);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive */
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .packs-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .two-column {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .cards-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-title {
+        letter-spacing: 0.12em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- NAV -->
+    <header class="site-header">
+      <div class="nav-inner">
+        <div class="logo">
+          <div class="logo-main">THE WORST KIDS EVER</div>
+          <div class="logo-tag">Digital card universe</div>
+        </div>
+        <nav class="nav-links">
+          <a href="#how-it-works">How it works</a>
+          <a href="#featured-cards">Cards</a>
+          <a href="#packs">Packs</a>
+          <a href="#collection">Collection</a>
+          <button class="pill-cta" onclick="scrollToSection('packs')">
+            💎 Get Packs
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="section">
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-left-tag">
+              <span class="dot"></span>
+              LIVE CHAOS · COMING SOON
+            </div>
+            <h1 class="hero-title">
+              <span class="brand">THE WORST KIDS EVER</span><br />
+              DIGITAL TRADING CARDS
+            </h1>
+            <p class="hero-sub">
+              Rip open animated packs, collect outrageous kids, and trade your way
+              through the most wonderfully terrible classroom on the planet.
+            </p>
+            <div class="hero-buttons">
+              <button class="pill-cta" onclick="openPack()">
+                🎁 Open a Free Demo Pack
+              </button>
+              <button class="pill-cta" style="background: transparent; border:1px solid rgba(255,255,255,0.18); color:var(--text); box-shadow:none;" onclick="scrollToSection('featured-cards')">
+                👀 View Sample Cards
+              </button>
+            </div>
+            <div class="hero-meta">
+              <span class="pill">⚡ Instant web-based app</span>
+              <span>💎 Diamond-based packs</span>
+              <span>📱 Built for phones & tablets</span>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="pack-card">
+              <div class="pack-card-glow"></div>
+              <div class="pack-header">
+                <div class="pack-badge">
+                  <span class="pack-badge-dot"></span>
+                  SERIES 8 · PREVIEW PACK
+                </div>
+                <div class="pack-title">CLASSROOM CHAOS</div>
+                <div class="pack-subtitle">3 random demo cards</div>
+              </div>
+
+              <div class="pack-body">
+                <div class="pack-inner-top">
+                  <div class="pack-card-preview">
+                    <div class="pack-card-preview-inner">
+                      <span class="title">THE WORST KIDS EVER</span>
+                      <span class="note">Tap “Open Pack” to see a random combo of kids from the demo list.</span>
+                    </div>
+                  </div>
+                  <div class="pack-chance-list">
+                    <ul>
+                      <li>
+                        <span class="pack-chance-label">COMMON</span>
+                        <span class="pack-chance-value">70%</span>
+                      </li>
+                      <li>
+                        <span class="pack-chance-label">RARE</span>
+                        <span class="pack-chance-value">25%</span>
+                      </li>
+                      <li>
+                        <span class="pack-chance-label">FOIL CHAOS</span>
+                        <span class="pack-chance-value">5%</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="open-pack-area">
+                  <button class="open-pack-btn pulse" id="open-pack-btn" onclick="openPack()">
+                    🎁 OPEN PACK
+                  </button>
+                  <div class="pack-result" id="pack-result">
+                    <div class="pack-result-header">
+                      <span>Demo pull</span>
+                      <span>0 / 3</span>
+                    </div>
+                    <div class="pack-result-list">
+                      <span style="font-size:0.74rem; color:var(--muted);">
+                        Tap “Open Pack” to generate 3 random Worst Kids Ever cards.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- pack-card -->
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section" id="how-it-works">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-sub">
+          When the site is live, fans will log in, buy diamonds, rip animated packs,
+          and manage their personal WKE collection — just like a real trading card app.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-label">Step 1</div>
+            <div class="step-title">Buy diamonds</div>
+            <p>
+              Players grab diamonds in the shop. Diamonds are used to purchase
+              standard packs, foil packs, and special event drops.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-label">Step 2</div>
+            <div class="step-title">Rip open packs</div>
+            <p>
+              A digital pack appears on screen, crinkles, and tears open to reveal
+              brand-new Worst Kids Ever cards, complete with rarity effects.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-label">Step 3</div>
+            <div class="step-title">Collect & trade</div>
+            <p>
+              Every card drops straight into the player’s collection. They can flip
+              cards, view stats, and trade with other collectors in real time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED CARDS -->
+      <section class="section" id="featured-cards">
+        <h2 class="section-title">Featured sample cards</h2>
+        <p class="section-sub">
+          Here’s a tiny taste of the chaos. These are placeholder previews —
+          you’ll swap in real card art and stats from your Worst Kids Ever series.
+        </p>
+
+        <div class="cards-grid">
+          <div class="card-demo">
+            <div class="card-demo-inner">
+              <div class="card-demo-banner">THE WORST KIDS EVER</div>
+              <div class="card-demo-name">NOSE PICKIN’ BRODY</div>
+              <div class="card-demo-tag">Legendary booger sorcerer</div>
+              <div class="card-demo-stats">
+                <span>Trouble 10</span>
+                <span>Power 5</span>
+                <span>Hygiene 2</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-demo">
+            <div class="card-demo-inner">
+              <div class="card-demo-banner">THE WORST KIDS EVER</div>
+              <div class="card-demo-name">RALPHIN’ RALPH</div>
+              <div class="card-demo-tag">Hallway hazard specialist</div>
+              <div class="card-demo-stats">
+                <span>Trouble 8</span>
+                <span>Power 6</span>
+                <span>Hygiene 1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-demo">
+            <div class="card-demo-inner">
+              <div class="card-demo-banner">THE WORST KIDS EVER</div>
+              <div class="card-demo-name">BOOGERNAUT BILLY</div>
+              <div class="card-demo-tag">Galaxy-class gross-out</div>
+              <div class="card-demo-stats">
+                <span>Trouble 9</span>
+                <span>Power 7</span>
+                <span>Hygiene 1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-demo">
+            <div class="card-demo-inner">
+              <div class="card-demo-banner">THE WORST KIDS EVER</div>
+              <div class="card-demo-name">NEED-A-HUG DOUG</div>
+              <div class="card-demo-tag">Emotional wrecking ball</div>
+              <div class="card-demo-stats">
+                <span>Trouble 6</span>
+                <span>Power 4</span>
+                <span>Hygiene 3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PACKS -->
+      <section class="section" id="packs">
+        <h2 class="section-title">Pack types</h2>
+        <p class="section-sub">
+          These are example tiers. When you’re ready, we’ll wire them to real
+          pricing, diamond amounts, and drop schedules.
+        </p>
+
+        <div class="packs-grid">
+          <div class="pack-tier">
+            <div class="pack-tier-label">Starter</div>
+            <div class="pack-tier-name">Recess Pack</div>
+            <div class="pack-tier-price">~ 100–200 diamonds (example)</div>
+            <ul>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>5 digital cards per pack</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Common and rare kids only</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Perfect for new collectors</span>
+              </li>
+            </ul>
+            <div class="pack-tier-btn">COMING SOON</div>
+          </div>
+
+          <div class="pack-tier">
+            <div class="pack-tier-label">Core</div>
+            <div class="pack-tier-name">Detention Pack</div>
+            <div class="pack-tier-price">~ 400–600 diamonds (example)</div>
+            <ul>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>7 digital cards per pack</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Higher chance at rares & foils</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Best balance of chaos & value</span>
+              </li>
+            </ul>
+            <div class="pack-tier-btn">COMING SOON</div>
+          </div>
+
+          <div class="pack-tier">
+            <div class="pack-tier-label">Premium</div>
+            <div class="pack-tier-name">Principal’s Nightmare Pack</div>
+            <div class="pack-tier-price">~ 1,000+ diamonds (example)</div>
+            <ul>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>10 digital cards per pack</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Guaranteed foil or special variant</span>
+              </li>
+              <li>
+                <span class="dot-bullet"></span>
+                <span>Chance at ultra-rare “Iconic” kids</span>
+              </li>
+            </ul>
+            <div class="pack-tier-btn">COMING SOON</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLLECTION / TRADING -->
+      <section class="section" id="collection">
+        <h2 class="section-title">Collection & trading</h2>
+        <p class="section-sub">
+          Your site isn’t just a landing page — it’s a full digital playground
+          for the Worst Kids Ever universe.
+        </p>
+
+        <div class="two-column">
+          <div class="info-card">
+            <h3 style="margin-bottom:8px; font-size:1rem;">Your collection</h3>
+            <p>
+              Every card a player pulls lands in a personal collection locker.
+              They can filter by series, rarity, character, or special inserts,
+              and tap any card to flip it and read the back story and stats.
+            </p>
+            <div class="badge-row">
+              <div class="badge">Card flipping animations</div>
+              <div class="badge">Series & rarity filters</div>
+              <div class="badge">Full stats & descriptions</div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3 style="margin-bottom:8px; font-size:1rem;">Live trading & chat</h3>
+            <p>
+              Players can send trade offers to each other, chat about deals,
+              and build dream sets together. You’ll control which cards are tradable,
+              event-only, or locked as special achievements.
+            </p>
+            <div class="badge-row">
+              <div class="badge">1:1 & multi-card trades</div>
+              <div class="badge">In-app chat</div>
+              <div class="badge">Event-only drops</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© 2025 THE WORST KIDS EVER · All characters & artwork by Ronald J. Boland II</span>
+        <span>Digital experience prototype · Hosted on GitHub Pages</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Smooth scroll helper
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      window.scrollTo({
+        top: el.offsetTop - 70,
+        behavior: "smooth"
+      });
+    }
+
+    // Demo pack opener
+    const demoCards = [
+      "Nose Pickin’ Brody · Rare",
+      "Ralphin’ Ralph · Common",
+      "Boogernaut Billy · Foil Chaos",
+      "Need-a-Hug Doug · Common",
+      "Brody Buddy · Sensory Variant",
+      "Jacked-Up Jesse · Rare",
+      "Detention Donna · Common",
+      "Spill-It Jill · Rare",
+      "Crayon Eater Carl · Common",
+      "Snot Rocket Rick · Foil Chaos"
+    ];
+
+    function openPack() {
+      const btn = document.getElementById("open-pack-btn");
+      const resultBox = document.getElementById("pack-result");
+      if (!btn || !resultBox) return;
+
+      // Little click feedback
+      btn.classList.remove("pulse");
+      btn.disabled = true;
+      btn.innerText = "✨ CRINKLE... RIP...";
+
+      setTimeout(() => {
+        // Pick 3 random demo cards (simple, can repeat)
+        const pulls = [];
+        for (let i = 0; i < 3; i++) {
+          const idx = Math.floor(Math.random() * demoCards.length);
+          pulls.push(demoCards[idx]);
+        }
+
+        const header = resultBox.querySelector(".pack-result-header");
+        const list = resultBox.querySelector(".pack-result-list");
+
+        if (header) {
+          const spans = header.querySelectorAll("span");
+          if (spans.length === 2) {
+            spans[0].innerText = "Demo pull";
+            spans[1].innerText = "3 / 3";
+          }
+        }
+        if (list) {
+          list.innerHTML = pulls
+            .map(card => `<span class="pack-result-pill">${card}</span>`)
+            .join("");
+        }
+        btn.innerText = "🎁 OPEN PACK AGAIN";
+        btn.classList.add("pulse");
+        btn.disabled = false;
+      }, 900);
+    }
+  </script>
+</body>
+</html>
