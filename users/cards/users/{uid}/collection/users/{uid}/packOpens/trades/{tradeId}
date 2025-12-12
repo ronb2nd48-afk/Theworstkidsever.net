@@ -1,0 +1,8 @@
+{
+  "fromUid": "A",
+  "toUid": "B",
+  "status": "pending",
+  "offer": [{"cardId":"c_8_12","qty":1}],
+  "request": [{"cardId":"c_8_05","qty":1}],
+  "createdAt": "serverTimestamp"
+}
